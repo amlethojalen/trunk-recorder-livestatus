@@ -1,15 +1,15 @@
-Trunker Recorder LiveStatus
+Trunk Recorder LiveStatus
 ==========================
 
-Trunker Recorder LiveStatus is a companion application the Trunker Recorder which can be found [here](https://github.com/robotastic/trunk-recorder)
+Trunk Recorder LiveStatus is a companion application to Trunker Recorder which can be found [here](https://github.com/robotastic/trunk-recorder)
 
-**These instructions are very much draft instructions, and only tested on Ubuntu***
+**These instructions are very much draft instructions, and only tested on Ubuntu**
 
 ## Install
-Make sure Trunker Recorder is installed and running correctly
+Make sure Trunk Recorder is installed and running correctly
 Follow the instructions below to install Live Status
 
-### Insatll git curl
+### Install git, curl and typescript
 ```bash
 sudo apt-get install git curl node-typescript
 ```
@@ -45,8 +45,8 @@ Update the **port** (if required) and update the **captureDir** to match the **c
 pico config.js
 ```
 
-### Configure **Trunker-Recorder**
-Edit the **Trunker-Recorder** config and set the **statusServer** to the url to communicate to **Live Status** (by default url should be *http://127.0.0.1:8888*)
+### Configure **Trunk-Recorder**
+Edit the **Trunk-Recorder** config and set the **statusServer** to the url to communicate to **Live Status** (by default url should be *http://127.0.0.1:8888*)
 
 ### Run the application
 ```bash
