@@ -4,7 +4,7 @@ var config = [];
 config.port = 8888;
 
 // the folder where the captures can be located
-config.captureDirectory = "/home/amlethojalen/captures";
+config.captureDirectory = "/home/xxxxx/captures";
 
 // the url prefix for capture files, this can be any random value, changing it will break previous captures
 config.captureURLPrefix = "/captures";

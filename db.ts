@@ -15,6 +15,11 @@ import {Rate} from './models/rate'
 import {System} from './models/system';
 import {Recorder} from './models/recorder';
 import {RecorderStat} from './models/recorderstat';
+import Semaphore from 'semaphore-async-await';
+
+const callUpdateLock = new Semaphore(1);
+const recorderUpdateLock = new Semaphore(1);
+const systemUpdateLock = new Semaphore(1);
 
 
 export class DB
@@ -31,68 +36,90 @@ export class DB
 	async CallUpdate(call : Call)
 	{
 		const db = await this._dbPromise;
-		var dbCall = await db.get("SELECT * FROM Call WHERE id = ?", call.id);
-		if (dbCall == undefined)
+		await callUpdateLock.wait();
+		try 
 		{
-			// insert
-			await db.run("INSERT INTO Call(id, systemName, talkgroup, frequency, recorderNumber, startTime, stopTime, fileName, length, state, talkgrouptag, emergency, encrypted) "
-					+ "VALUES ($id, $systemName, $talkgroup, $frequency, $recorderNumber, $startTime, $stopTime, $fileName, $length, $state, $talkgrouptag, $emergency, $encrypted)", 
-					{ 	$id : call.id,
-						$systemName : call.systemName,
-						$talkgroup : call.talkgroup,
-						$frequency : call.frequency,
-						$recorderNumber : call.recorderNumber,
-						$startTime : call.startTime,
-						$stopTime : call.stopTime,
-						$fileName : call.fileName,
-						$length : call.length,
-						$state : call.state,
-						$talkgrouptag : call.talkgrouptag,
-						$emergency: call.emergency,
-						$encrypted: call.encrypted });
+			var dbCall = await db.get("SELECT * FROM Call WHERE id = ?", call.id);
+			if (dbCall == undefined)
+			{
+				// insert
+				await db.run("INSERT INTO Call(id, systemName, talkgroup, frequency, recorderNumber, startTime, stopTime, fileName, length, state, talkgrouptag, emergency, encrypted) "
+						+ "VALUES ($id, $systemName, $talkgroup, $frequency, $recorderNumber, $startTime, $stopTime, $fileName, $length, $state, $talkgrouptag, $emergency, $encrypted)", 
+						{ 	$id : call.id,
+							$systemName : call.systemName,
+							$talkgroup : call.talkgroup,
+							$frequency : call.frequency,
+							$recorderNumber : call.recorderNumber,
+							$startTime : call.startTime,
+							$stopTime : call.stopTime,
+							$fileName : call.fileName,
+							$length : call.length,
+							$state : call.state,
+							$talkgrouptag : call.talkgrouptag,
+							$emergency: call.emergency,
+							$encrypted: call.encrypted });
+			}
+			else
+			{
+				// update
+				await db.run("UPDATE Call SET stopTime = $stopTime, fileName = $fileName, length=$length, state = $state WHERE id = $id",
+				{ 	$id : call.id,
+					$stopTime : call.stopTime,
+					$fileName : call.fileName,
+					$length : call.length,
+					$state : call.state});				
+			}
 		}
-		else
+		catch (e)
 		{
-			// update
-			await db.run("UPDATE Call SET stopTime = $stopTime, fileName = $fileName, length=$length, state = $state WHERE id = $id",
-			{ 	$id : call.id,
-				$stopTime : call.stopTime,
-				$fileName : call.fileName,
-				$length : call.length,
-				$state : call.state});				
+			console.error("Error CallUpdate", e);
+		}
+		finally{
+			callUpdateLock.signal();
 		}
 	}
 
 	async RecorderUpdate(recorder : Recorder)
 	{
 		const db = await this._dbPromise;
-		var dbRecorder = await db.get("SELECT * FROM Recorder WHERE id = ?", recorder.id);
-		if (dbRecorder == undefined)
+		await recorderUpdateLock.wait();
+		try 
 		{
-			// insert
-			await db.run("INSERT INTO Recorder(id, type, srcNum, recNum, count, duration, state, len, error, spike) "
-					+ "VALUES ($id, $type, $srcNum, $recNum, $count, $duration, $state, $len, $error, $spike)", 
-					{ 	$id : recorder.id,
-						$type : recorder.type,
-						$srcNum : recorder.srcNum,
-						$recNum : recorder.recNum,
-						$count : recorder.count,
-						$duration : recorder.duration,
-						$state : recorder.state,
-						$len : recorder.len,
-						$error : recorder.error,
-						$spike : recorder.spike});
+			var dbRecorder = await db.get("SELECT * FROM Recorder WHERE id = ?", recorder.id);
+			if (dbRecorder == undefined)
+			{
+				// insert
+				await db.run("INSERT INTO Recorder(id, type, srcNum, recNum, count, duration, state, len, error, spike) "
+						+ "VALUES ($id, $type, $srcNum, $recNum, $count, $duration, $state, $len, $error, $spike)", 
+						{ 	$id : recorder.id,
+							$type : recorder.type,
+							$srcNum : recorder.srcNum,
+							$recNum : recorder.recNum,
+							$count : recorder.count,
+							$duration : recorder.duration,
+							$state : recorder.state,
+							$len : recorder.len,
+							$error : recorder.error,
+							$spike : recorder.spike});
+			}
+			else
+			{
+				// update
+				await db.run("UPDATE Recorder SET count = $count, duration = $duration, len=$len, error = $error, spike = $spike WHERE id = $id",
+				{ 	$id : recorder.id,
+					$count : recorder.count,
+					$duration : recorder.duration,
+					$len : recorder.len,
+					$error : recorder.error,
+					$spike : recorder.spike});				
+			}
 		}
-		else
+		catch (e)
 		{
-			// update
-			await db.run("UPDATE Recorder SET count = $count, duration = $duration, len=$len, error = $error, spike = $spike WHERE id = $id",
-			{ 	$id : recorder.id,
-				$count : recorder.count,
-				$duration : recorder.duration,
-				$len : recorder.len,
-				$error : recorder.error,
-				$spike : recorder.spike});				
+			console.error("Error RecorderUpdate", e);
+		}
+		finally{
+			recorderUpdateLock.signal();
 		}
 	}
 
@@ -172,29 +199,40 @@ export class DB
 	async SystemUpdate(system : System)
 	{
 		const db = await this._dbPromise;
-		var dbSystem = await db.get("SELECT * FROM System WHERE id = ?", system.id);
-		if (dbSystem == undefined)
+		await systemUpdateLock.wait();
+		try 
 		{
-			// insert
-			await db.run("INSERT INTO System (id, type, name, sysid, wacn, nac) "
-					+ "VALUES ($id, $type, $name, $sysid, $wacn, $nac)", 
-					{ 	$id : system.id,
-						$type : system.type,
-						$name : system.name,
-						$sysid : system.sysid,
-						$wacn : system.wacn,
-						$nac : system.nac});
+			var dbSystem = await db.get("SELECT * FROM System WHERE id = ?", system.id);
+			if (dbSystem == undefined)
+			{
+				// insert
+				await db.run("INSERT INTO System (id, type, name, sysid, wacn, nac) "
+						+ "VALUES ($id, $type, $name, $sysid, $wacn, $nac)", 
+						{ 	$id : system.id,
+							$type : system.type,
+							$name : system.name,
+							$sysid : system.sysid,
+							$wacn : system.wacn,
+							$nac : system.nac});
+			}
+			else
+			{
+				// update
+				await db.run("UPDATE System SET type = $type, name = $name, sysid=$sysid, wacn = $wacn, nac = $nac WHERE id = $id",
+				{ 	$id : system.id,
+					$type : system.type,
+					$name : system.name,
+					$sysid : system.sysid,
+					$wacn : system.wacn,
+					$nac : system.nac});				
+			}
 		}
-		else
+		catch (e)
 		{
-			// update
-			await db.run("UPDATE System SET type = $type, name = $name, sysid=$sysid, wacn = $wacn, nac = $nac WHERE id = $id",
-			{ 	$id : system.id,
-				$type : system.type,
-				$name : system.name,
-				$sysid : system.sysid,
-				$wacn : system.wacn,
-				$nac : system.nac});				
+			console.error("Error SystemUpdate", e);
+		}
+		finally{
+			systemUpdateLock.signal();
 		}
 	}
 
