@@ -1,0 +1,289 @@
+html, body {
+	height: 100%;
+	
+}
+
+.error {
+    background: red;
+}
+
+.container, .row {
+	height:100%;
+}
+.row-sm-12 { height: 100%; }
+.row-sm-11 { height: 91.66666666666666%; }
+.row-sm-10 { height: 83.33333333333334%; }
+.row-sm-9 { height: 75%; }
+.row-sm-8 { height: 66.66666666666666%; }
+.row-sm-7 { height: 58.333333333333336%; }
+.row-sm-6 { height: 50%; }
+.row-sm-5 { height: 41.66666666666667%;}
+.row-sm-4 { height: 33.33333333333333%;}
+.row-sm-3 { height: 25%; }
+.row-sm-2 { height: 16.666666666666664%; }
+.row-sm-1 { height: 8.333333333333332%; }
+
+.row-md-12 { height: 100%; }
+.row-md-11 { height: 91.66666666666666%; }
+.row-md-10 { height: 83.33333333333334%; }
+.row-md-9 { height: 75%; }
+.row-md-8 { height: 66.66666666666666%; }
+.row-md-7 { height: 58.333333333333336%; }
+.row-md-6 { height: 50%; }
+.row-md-5 { height: 41.66666666666667%;}
+.row-md-4 { height: 33.33333333333333%;}
+.row-md-3 { height: 25%; }
+.row-md-2 { height: 16.666666666666664%; }
+.row-md-1 { height: 8.333333333333332%; }
+
+table, .call-table tbody{
+	width: 100%;
+	max-height: 100%;
+	font-size: 12px;
+}
+
+table tr
+{
+	width: 100%;
+}
+
+table tr td
+{
+	padding: 5px;
+	height:30px;
+	color: black;
+}
+
+table tr.even
+{
+	background-color: white;
+}
+
+
+table tr.odd {
+	background: #eee;
+}
+
+table thead th
+{
+	background-color: #4A7993;
+	padding: 5px;
+	height:30px;
+	color: white;
+	
+}
+
+table tr.activecall.even
+{
+	background-color:rgb(207, 250, 207);
+	-webkit-transition: background-color 2000ms linear;
+    -ms-transition: background-color 2000ms linear;
+    transition: background-color 2000ms linear;
+
+}
+
+table tr.activecall.odd {
+	background-color:rgb(189, 231, 189);
+	-webkit-transition: background-color 2000ms linear;
+    -ms-transition: background-color 2000ms linear;
+    transition: background-color 2000ms linear;
+
+}
+
+table tr.inactivecall.even
+{
+	background: white;
+	transition-delay: 0s;
+}
+
+table tr.inactivecall.odd
+{
+	background: #eee;
+	transition-delay: 0s;
+}
+
+
+table tr.activerecorder.even
+{
+	background-color:rgb(207, 250, 207);
+}
+
+table tr.activerecorder.odd {
+	background-color:rgb(189, 231, 189);
+}
+
+table tr.inactiverecorder.even
+{
+	background: white;
+    -webkit-transition: background-color 2000ms linear;
+    -ms-transition: background-color 2000ms linear;
+    transition: background-color 2000ms linear;
+}
+
+table tr.inactiverecorder.odd
+{
+	background: #eee;
+    -webkit-transition: background-color 2000ms linear;
+    -ms-transition: background-color 2000ms linear;
+    transition: background-color 2000ms linear;
+}
+
+
+table.recorder-table tr, table.recorder-table tr td{
+	height: 15px;
+}
+
+
+div.row{
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+tr.inactivecall  img.recording
+{
+	display: none;
+}
+
+tr.inactivecall  img
+{
+	height: 30px;
+}
+
+div.panel{
+	overflow-y:scroll;
+	margin-bottom: 0px;
+	border: 1px solid black;
+	border-radius: 0px;	
+}
+
+div.panel div.heading
+{
+	width: 100%;
+	display: block;
+	background: #4A7993;
+	height: 30px;
+	color: white;
+	padding: 5px;
+	font-weight: bold;	
+}
+
+div.value, div.valueheading
+{
+	display: inline-block;
+}
+
+div.valueheading
+{
+	font-weight: normal;
+	padding-right: 20px;
+}
+
+div.value
+{
+	font-weight: bold;
+}
+
+div.sysheading
+{
+	font-weight: bold;
+	padding-left: 10px;
+	background-color: rgb(117, 157, 179);
+	color: white;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+div.sysrow
+{
+	margin-left: 20px;
+}
+
+div.sys
+{
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	margin: 3px;
+	background: white;
+	padding-bottom: 10px;
+}
+
+#system_container
+{
+	background-color: #EAEAEA;
+}
+
+span.right
+{
+	float: right;
+	padding-right: 10px;
+}
+
+td.playbuttoncontainer
+{
+	padding:  0px;
+}
+
+button.filterbutton
+{
+	font-size: 12px;
+}
+
+
+@media (max-width: 991px)  {
+	audio {
+		width: 100%;
+	}
+
+	th.audio
+	{
+		width: 60px;
+	}
+
+	table tr td
+	{
+		padding: 5px;
+		height:45px;
+		color: black;
+	}
+
+
+	button.playbutton
+	{
+		height: 35px;
+	}
+
+}
+
+@media (min-width: 991px)  {
+	audio {
+		width: 300px;
+		height: 20px;
+	
+	}
+
+	th.audio
+	{
+		width: 310px;
+	}
+
+	button.playbutton
+	{
+		height: 25px;
+	}
+
+	span.glyphicon-play
+	{
+		line-height: 14px;
+	}
+
+	button.playbutton.btn
+	{
+		padding-top: 0px;
+		padding-bottom: 0px;
+	}
+}
